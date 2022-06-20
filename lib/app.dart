@@ -1,7 +1,6 @@
-import 'package:techx/view/splash/splash_screen.dart';
-
 import 'domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'view/view.dart';
 
 class TechX extends StatelessWidget {
   const TechX({Key? key}) : super(key: key);
@@ -10,9 +9,10 @@ class TechX extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'TechX',
+      debugShowCheckedModeBanner: false,
       theme: kThemeData,
-      home: SplashScreen(),
+      home: SplashView(),
       onGenerateRoute: onGenerateRoute,
     );
   }

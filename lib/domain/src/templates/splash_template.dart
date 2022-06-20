@@ -1,17 +1,86 @@
 import 'package:flutter/material.dart';
 
-class SplashScreenTemplate extends StatelessWidget {
+class SplashScreenTemplate extends StatefulWidget {
   const SplashScreenTemplate({
     Key? key,
-    required this.body,
+    required this.image,
+    this.message,
   }) : super(key: key);
 
-  final Widget body;
+  final Image image;
+  final String? message;
+
+  @override
+  State<SplashScreenTemplate> createState() => _SplashScreenTemplateState();
+}
+
+class _SplashScreenTemplateState extends State<SplashScreenTemplate>
+    with SingleTickerProviderStateMixin {
+  late Animation<double> animation;
+  late AnimationController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller =
+        AnimationController(duration: const Duration(seconds: 3), vsync: this);
+    animation = Tween<double>(begin: 0.9, end: 0.6)
+        .animate(CurvedAnimation(parent: controller, curve: Curves.ease))
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          controller.reverse();
+        } else if (status == AnimationStatus.dismissed) {
+          controller.forward();
+        }
+      })
+      ..addListener(() {
+        setState(() {});
+      });
+    controller.forward();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: body,
+    return Container(
+      padding: EdgeInsets.all(70.0),
+      decoration: BoxDecoration(
+        color: Colors.black,
+        gradient: SweepGradient(
+          center: Alignment.bottomRight,
+          tileMode: TileMode.mirror,
+          colors: [
+            Colors.black,
+            Color.fromRGBO(123, 175, 212, 1),
+          ],
+          stops: [animation.value, 1],
+        ),
+      ),
+      child: Column(
+        children: [
+          Expanded(
+            child: Container(),
+          ),
+          widget.image,
+          Expanded(
+            child: Container(),
+          ),
+          Text(
+            widget.message ?? "",
+            style: TextStyle(
+              color: Colors.white,
+              decoration: TextDecoration.none,
+              fontSize: 15.0,
+              fontWeight: FontWeight.w200,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
