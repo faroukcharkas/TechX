@@ -6,3 +6,4 @@ export 'src/templates/full_template.dart';
 export 'src/templates/splash_template.dart';
 export 'src/widgets/profile_summary.dart';
 export 'src/widgets/navigation_tile.dart';
+export 'src/widgets/member_pass.dart';
