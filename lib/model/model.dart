@@ -1,1 +1,3 @@
-export 'src/splash/splash_model.dart';
+export 'src/event_model.dart';
+export 'src/schedule_model.dart';
+export 'src/announcement_model.dart';

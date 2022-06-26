@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:techx/domain/domain.dart';
-import 'package:techx/model/model.dart';
+import 'dart:async';
 
 class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);
@@ -13,7 +13,10 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
-    SplashModel.proceedToNextScreenOnTimer(context);
+    // Make sure that the below duration is 2x the animation length.
+    Timer(Duration(seconds: 6), () {
+      Navigator.pushNamedAndRemoveUntil(context, '/auth', (route) => false);
+    });
   }
 
   @override
@@ -23,7 +26,6 @@ class _SplashViewState extends State<SplashView> {
         'assets/brand/techx-full-logo@0.5x/techx-full-logo@0.5x(white).png',
         scale: 2.5,
       ),
-      message: SplashModel().getRandomMessage(),
     );
   }
 }

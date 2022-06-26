@@ -1,51 +1,80 @@
 import 'package:flutter/material.dart';
 import 'package:techx/domain/domain.dart';
+import 'package:techx/model/model.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({Key? key}) : super(key: key);
+  const HomeView({
+    Key? key,
+    required this.pageController,
+  }) : super(key: key);
+
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(20.0),
-      color: Colors.black,
-      child: Column(
-        children: [
-          ProfileSummary(
-            rank: 1,
-            memberSince: DateTime.now(),
-          ),
-          SizedBox(
-            height: 20.0,
-          ),
-          Row(
+    return ListView(
+      children: [
+        Container(
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              NavigationTile(
-                color: Colors.blue,
-                icon: Icons.qr_code,
-                message: "Open Pass",
+              ProfileSummary(
+                rank: 6,
+                isMember: false,
+                lastStatusUpdate: DateTime.now(),
               ),
               SizedBox(
-                width: 20.0,
+                height: 20.0,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: NavigationTile(
+                      color: Colors.blue,
+                      icon: Icons.qr_code,
+                      message: "Open Pass",
+                      onTap: () {
+                        pageController.animateToPage(1,
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.ease);
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20.0,
+                  ),
+                  Expanded(
+                    child: NavigationTile(
+                      color: Colors.blueGrey,
+                      icon: Icons.person,
+                      message: "Open Profile",
+                      onTap: () {
+                        pageController.animateToPage(3,
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.ease);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20.0,
               ),
               NavigationTile(
-                color: Colors.blueGrey,
-                icon: Icons.person,
-                message: "Open Profile",
+                color: Colors.deepPurple,
+                icon: Icons.event_outlined,
+                message: "Open Event Schedule",
+                onTap: () {
+                  pageController.animateToPage(2,
+                      duration: Duration(milliseconds: 500),
+                      curve: Curves.ease);
+                },
               ),
             ],
           ),
-          SizedBox(
-            height: 20.0,
-          ),
-          NavigationTile(
-            color: Colors.deepPurple,
-            icon: Icons.event_outlined,
-            message: "Open Event Schedule",
-          ),
-        ],
-      ),
+        )
+      ],
     );
   }
 }

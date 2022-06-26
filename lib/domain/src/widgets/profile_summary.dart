@@ -1,37 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:techx/domain/domain.dart';
 
 class ProfileSummary extends StatelessWidget {
   const ProfileSummary({
     Key? key,
     required this.rank,
-    required this.memberSince,
+    required this.isMember,
+    required this.lastStatusUpdate,
   }) : super(key: key);
 
   final int rank;
-  final DateTime memberSince;
-
-  MaterialColor _getRankColor() {
-    switch (rank) {
-      case 1:
-        return Colors.brown;
-      case 2:
-        return Colors.grey;
-      case 3:
-        return Colors.yellow;
-      case 4:
-        return Colors.cyan;
-      default:
-        return Colors.brown;
-    }
-  }
+  final bool isMember;
+  final DateTime lastStatusUpdate;
 
   List<Widget> _getRankRate() {
+    Color stepColor;
+
+    if (rank == 0) {
+      stepColor = Colors.white;
+    } else {
+      stepColor = Colors.black.withOpacity(0.5);
+    }
+
     List<Widget> returnRankList = [];
     for (var i = 0; i < (4 - rank); i++) {
       returnRankList.add(
         Icon(
           Icons.rectangle_outlined,
-          color: Colors.black.withOpacity(0.5),
+          color: stepColor,
         ),
       );
     }
@@ -39,7 +35,7 @@ class ProfileSummary extends StatelessWidget {
       returnRankList.add(
         Icon(
           Icons.rectangle,
-          color: Colors.black.withOpacity(0.5),
+          color: stepColor,
         ),
       );
     }
@@ -47,10 +43,10 @@ class ProfileSummary extends StatelessWidget {
   }
 
   String _getRankName() {
-    if (rank > 0) {
-      return "Member";
-    } else {
+    if (rank == 0) {
       return "Associate";
+    } else {
+      return "Member";
     }
   }
 
@@ -83,14 +79,16 @@ class ProfileSummary extends StatelessWidget {
                 bottomLeft: Radius.circular(13.0),
               ),
               gradient: LinearGradient(
-                colors: [
-                  _getRankColor().shade300,
-                  _getRankColor().shade700,
-                ],
+                colors: RankUtility.getRankColors(rank),
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
             ),
+          ),
+          Container(
+            color: Colors.white,
+            height: double.infinity,
+            width: 0.25,
           ),
           SizedBox(
             width: 10.0,
@@ -107,7 +105,7 @@ class ProfileSummary extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  _getRankName(),
+                  RankUtility.getMembershipStatus(isMember),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 45.0,
@@ -118,7 +116,7 @@ class ProfileSummary extends StatelessWidget {
                   child: Container(),
                 ),
                 Text(
-                  "Since ${memberSince.month}/${memberSince.day}/${memberSince.year}",
+                  "Since ${lastStatusUpdate.month}/${lastStatusUpdate.day}/${lastStatusUpdate.year}",
                   style: TextStyle(
                     color: Colors.white,
                   ),

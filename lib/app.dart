@@ -1,3 +1,4 @@
+import 'package:techx/view/src/auth/auth_view.dart';
 import 'domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'view/view.dart';

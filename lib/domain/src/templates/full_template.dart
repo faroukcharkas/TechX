@@ -6,11 +6,13 @@ class FullTemplate extends StatelessWidget {
     required this.navBarIndex,
     required this.body,
     required this.onTap,
+    required this.points,
   }) : super(key: key);
 
   final int navBarIndex;
   final Widget body;
   final void Function(int)? onTap;
+  final int points;
 
   @override
   Widget build(BuildContext context) {
@@ -21,15 +23,24 @@ class FullTemplate extends StatelessWidget {
             Image.asset(
               'assets/brand/techx-full-logo@0.5x/techx-full-logo@0.5x(white).png',
               scale: 6,
+              color: Colors.white.withOpacity(0.7),
             ),
             Expanded(
               child: Container(),
             ),
             Row(
               children: [
-                Icon(Icons.star),
+                Icon(
+                  Icons.star,
+                  color: Colors.white.withOpacity(0.7),
+                ),
                 SizedBox(width: 3.0),
-                Text("145"),
+                Text(
+                  "$points",
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.7),
+                  ),
+                ),
               ],
             ),
           ],

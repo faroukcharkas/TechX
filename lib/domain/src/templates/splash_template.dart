@@ -56,7 +56,7 @@ class _SplashScreenTemplateState extends State<SplashScreenTemplate>
           tileMode: TileMode.mirror,
           colors: [
             Colors.black,
-            Color.fromRGBO(123, 175, 212, 1),
+            Colors.blue,
           ],
           stops: [animation.value, 1],
         ),
@@ -69,15 +69,6 @@ class _SplashScreenTemplateState extends State<SplashScreenTemplate>
           widget.image,
           Expanded(
             child: Container(),
-          ),
-          Text(
-            widget.message ?? "",
-            style: TextStyle(
-              color: Colors.white,
-              decoration: TextDecoration.none,
-              fontSize: 15.0,
-              fontWeight: FontWeight.w200,
-            ),
           ),
         ],
       ),

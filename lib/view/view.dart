@@ -4,3 +4,7 @@ export 'src/pass/pass_view.dart';
 export 'src/events/events_view.dart';
 export 'src/profile/profile_view.dart';
 export 'src/app/app_view.dart';
+export 'src/info/info_view.dart';
+export 'src/login/login_view.dart';
+export 'src/registration/registration_view.dart';
+export 'src/welcome/welcome_view.dart';

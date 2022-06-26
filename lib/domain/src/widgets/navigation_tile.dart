@@ -6,16 +6,20 @@ class NavigationTile extends StatelessWidget {
     required this.color,
     required this.icon,
     required this.message,
+    required this.onTap,
   }) : super(key: key);
 
   final MaterialColor color;
   final IconData icon;
   final String message;
+  final void Function() onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
+    return GestureDetector(
+      onTap: onTap,
       child: Container(
+        width: double.infinity,
         padding: EdgeInsets.all(15),
         decoration: BoxDecoration(
           gradient: LinearGradient(

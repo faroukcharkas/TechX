@@ -11,7 +11,12 @@ class PassView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(20.0),
-      child: MemberPass(),
+      child: MemberPass(
+        rank: 4,
+        pid: "730481745",
+        lastName: "Charkas",
+        firstName: "Farouk",
+      ),
     );
   }
 }
