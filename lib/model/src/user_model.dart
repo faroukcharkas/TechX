@@ -24,4 +24,10 @@ class UserModel {
   final int memberProgressionIndex;
   final String lastMembershipStatusUpdate;
   final String jsonAttendance;
+
+  Map<String, dynamic> getData() {
+    return {
+
+    };
+  }
 }
