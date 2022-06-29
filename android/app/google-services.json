@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "295447914446",
+    "project_id": "techx-540f6",
+    "storage_bucket": "techx-540f6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:295447914446:android:3758894d09e7273a38ad9f",
+        "android_client_info": {
+          "package_name": "com.unctechx.techx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "295447914446-4jv1oj22d1biev0o2o1k0hc7bv27ld7t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATppZSnjz4gAc0m2dTLFrKFXRGGBCbR4Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "295447914446-4jv1oj22d1biev0o2o1k0hc7bv27ld7t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "295447914446-jehhhkke0tto7i66rh0a7aqefu40ojge.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.unctechx.techx"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
