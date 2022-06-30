@@ -1,3 +1,7 @@
+import 'dart:core';
+
+import 'package:techx/domain/domain.dart';
+
 class UserModel {
   UserModel({
     required this.firstName,
@@ -10,7 +14,7 @@ class UserModel {
     required this.points,
     required this.memberProgressionIndex,
     required this.lastMembershipStatusUpdate,
-    required this.jsonAttendance,
+    required this.attendance,
   });
 
   final String firstName;
@@ -23,11 +27,65 @@ class UserModel {
   final int points;
   final int memberProgressionIndex;
   final String lastMembershipStatusUpdate;
-  final String jsonAttendance;
+  final List attendance;
 
-  Map<String, dynamic> getData() {
-    return {
+  String get getFirstName {
+    return firstName;
+  }
 
-    };
+  String get getLastName {
+    return lastName;
+  }
+
+  String get getEmail {
+    return email;
+  }
+
+  String get getGradYear {
+    return getGradYear;
+  }
+
+  String get getHowHeard {
+    return howTheyHeardAboutUs;
+  }
+
+  String get getJoinIntent {
+    return joinIntent;
+  }
+
+  String get getPID {
+    return pid;
+  }
+
+  int get getPoints {
+    return points;
+  }
+
+  int get getMemberProgressIndex {
+    return memberProgressionIndex;
+  }
+
+  DateTime get getLastMemberStatus {
+    return DateTime.parse(lastMembershipStatusUpdate);
+  }
+
+  List get getAttendance {
+    return attendance;
+  }
+
+  int get getRank {
+    return RankUtility.getRank(points);
+  }
+
+  bool get getIsMember {
+    return (memberProgressionIndex >= 2);
+  }
+
+  int getPointsTillNextRank(int rank) {
+    return RankUtility.getPointsTillNextRank(rank, points);
+  }
+
+  bool get getHasPaid {
+    return (memberProgressionIndex > -1);
   }
 }

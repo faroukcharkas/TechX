@@ -3,7 +3,26 @@ import 'package:techx/domain/domain.dart';
 import 'package:techx/domain/src/widgets/dues_section.dart';
 
 class ProfileView extends StatelessWidget {
-  const ProfileView({Key? key}) : super(key: key);
+  const ProfileView({
+    Key? key,
+    required this.firstName,
+    required this.lastName,
+    required this.pid,
+    required this.memberProgressionIndex,
+    required this.rank,
+    required this.pointsUntilNextRank,
+    required this.duesAmount,
+    required this.hasPaid,
+  }) : super(key: key);
+
+  final String firstName;
+  final String lastName;
+  final String pid;
+  final int memberProgressionIndex;
+  final int rank;
+  final int pointsUntilNextRank;
+  final String duesAmount;
+  final bool hasPaid;
 
   @override
   Widget build(BuildContext context) {
@@ -13,20 +32,36 @@ class ProfileView extends StatelessWidget {
           padding: EdgeInsets.all(20.0),
           child: Column(
             children: [
-              ProfileHeader(
-                  firstName: "Farouk", lastName: "Charkas", pid: "730481745"),
+              ProfileHeader(firstName: firstName, lastName: lastName, pid: pid),
               SizedBox(
                 height: 20.0,
               ),
-              RankBadge(rank: 3, pointsUntilNextRank: 10),
+              RankBadge(rank: rank, pointsUntilNextRank: pointsUntilNextRank),
               SizedBox(
                 height: 20.0,
               ),
-              PromoTrack(steps: ["Dues", "1-on-1", "Project"], index: 0),
+              PromoTrack(
+                  steps: ["Dues", "1-on-1", "Project"],
+                  index: memberProgressionIndex),
               SizedBox(
                 height: 20.0,
               ),
-              DuesSection(duesAmount: "25", hasPaid: true, onTap: () {}),
+              DuesSection(
+                duesAmount: duesAmount,
+                hasPaid: hasPaid,
+                onTap: () {
+                  showModalBottomSheet(
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    context: context,
+                    builder: (BuildContext context) {
+                      return PaySheet();
+                    },
+                  );
+                },
+              ),
               SizedBox(
                 height: 20.0,
               ),

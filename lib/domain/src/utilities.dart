@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const rankPoints = [100, 200, 300, 400, 500, 600, 700, 800, 900];
+
 class RankUtility {
   static List<Color> getRankColors(int rank) {
     switch (rank) {
@@ -36,6 +38,15 @@ class RankUtility {
     }
   }
 
+  static int getRank(int points) {
+    for (var i = 0; i < rankPoints.length; i++) {
+      if (points < rankPoints[i]) {
+        return i;
+      }
+    }
+    return 5;
+  }
+
   static String getRankName(int rank) {
     switch (rank) {
       case 0:
@@ -61,5 +72,9 @@ class RankUtility {
     } else {
       return "Associate";
     }
+  }
+
+  static int getPointsTillNextRank(int rank, int points) {
+    return rankPoints[rank + 1] - points;
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:techx/domain/domain.dart';
 import 'package:techx/model/model.dart';
 import 'package:techx/view/view.dart';
+import 'package:techx/controller/controller.dart';
+import 'package:provider/provider.dart';
 
 class AppView extends StatefulWidget {
   const AppView({Key? key}) : super(key: key);
@@ -16,21 +18,40 @@ class _AppViewState extends State<AppView> {
 
   @override
   Widget build(BuildContext context) {
+    UserModel userModel =
+        Provider.of<UserDataController>(context, listen: true).getUserModel;
     List<Widget> _views = [
       HomeView(
         pageController: _pageController,
+        rank: userModel.getRank,
+        isMember: userModel.getIsMember,
+        lastStatusUpdate: DateTime.now(),
       ),
-      PassView(),
+      PassView(
+        rank: userModel.getRank,
+        pid: userModel.getPID,
+        lastName: userModel.getLastName,
+        firstName: userModel.getFirstName,
+      ),
       EventsView(
         scheduleModel: ScheduleModel(
           events: [],
         ),
       ),
-      ProfileView(),
+      ProfileView(
+        firstName: userModel.getFirstName,
+        lastName: userModel.getLastName,
+        pid: userModel.pid,
+        memberProgressionIndex: userModel.getMemberProgressIndex,
+        rank: userModel.getRank,
+        pointsUntilNextRank: userModel.getPointsTillNextRank(userModel.getRank),
+        duesAmount: "25",
+        hasPaid: userModel.getHasPaid,
+      ),
     ];
 
     return FullTemplate(
-      points: 10,
+      points: userModel.getPoints,
       onTap: (newIndex) {
         _pageController.animateToPage(newIndex,
             duration: const Duration(milliseconds: 500), curve: Curves.ease);

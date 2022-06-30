@@ -26,43 +26,58 @@ class DuesSection extends StatelessWidget {
       ),
       width: double.infinity,
       padding: EdgeInsets.all(20.0),
-      child: Row(
+      child: Column(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
             children: [
-              Text(
-                "TechX dues are",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w300,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "TechX dues are",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                  Text(
+                    "\$$duesAmount",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
-              Text(
-                "\$$duesAmount",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.w600,
-                ),
+              Expanded(
+                child: Container(),
+              ),
+              Column(
+                children: [
+                  BasicButton(
+                    color: Colors.green,
+                    enabled: !hasPaid,
+                    enabledText: "Pay Dues",
+                    disabledText: "Already Paid",
+                    onTap: onTap,
+                  ),
+                ],
               ),
             ],
           ),
-          Expanded(
-            child: Container(),
+          SizedBox(
+            height: 10.0,
           ),
-          Column(
-            children: [
-              BasicButton(
-                color: Colors.green,
-                enabled: !hasPaid,
-                enabledText: "Pay Dues",
-                disabledText: "Already Paid",
-                onTap: onTap,
-              ),
-            ],
-          )
+          Text(
+            "Paid dues but still see a need to pay? We manually input due data so give it some time.",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 10.0,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
         ],
       ),
     );

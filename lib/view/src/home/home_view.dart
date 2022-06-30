@@ -6,9 +6,15 @@ class HomeView extends StatelessWidget {
   const HomeView({
     Key? key,
     required this.pageController,
+    required this.rank,
+    required this.isMember,
+    required this.lastStatusUpdate,
   }) : super(key: key);
 
   final PageController pageController;
+  final int rank;
+  final bool isMember;
+  final DateTime lastStatusUpdate;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +26,9 @@ class HomeView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ProfileSummary(
-                rank: 6,
-                isMember: false,
-                lastStatusUpdate: DateTime.now(),
+                rank: rank,
+                isMember: isMember,
+                lastStatusUpdate: lastStatusUpdate,
               ),
               SizedBox(
                 height: 20.0,

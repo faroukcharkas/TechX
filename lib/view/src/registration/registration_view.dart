@@ -103,9 +103,12 @@ class _RegistrationViewState extends State<RegistrationView> {
                     CustomTextFormField(
                       icon: Icons.tag,
                       label: "Personal Identification (PID)",
+                      keyboardType: TextInputType.number,
                       hintText: "e.g. 730483273",
                       validator: MultiValidator(
                         [
+                          PatternValidator(r"^(0|[1-9][0-9]*)$",
+                              errorText: "PID must be numbers only."),
                           RequiredValidator(errorText: "What's ur PID?"),
                           MinLengthValidator(9,
                               errorText:
@@ -122,8 +125,11 @@ class _RegistrationViewState extends State<RegistrationView> {
                       icon: Icons.school_outlined,
                       label: "Expected Graduation Year",
                       hintText: "e.g. 2025",
+                      keyboardType: TextInputType.number,
                       validator: MultiValidator(
                         [
+                          PatternValidator(r"^(0|[1-9][0-9]*)$",
+                              errorText: "Year must be numbers only."),
                           MinLengthValidator(4,
                               errorText: "Years need to have 4 digits."),
                           MaxLengthValidator(4,
@@ -144,7 +150,8 @@ class _RegistrationViewState extends State<RegistrationView> {
                       label: "How did you hear about us?",
                       hintText: "e.g. FallFest",
                       validator: RequiredValidator(
-                          errorText: "plz answer honestly (i beg of thee)"),
+                        errorText: "plz answer honestly (i beg of thee)",
+                      ),
                     ),
                     SizedBox(
                       height: 20.0,
@@ -153,9 +160,16 @@ class _RegistrationViewState extends State<RegistrationView> {
                       icon: Icons.lightbulb_outlined,
                       label: "What do you want out of joining TechX?",
                       hintText: "e.g. Get better at LeetCode!",
-                      validator: RequiredValidator(
-                        errorText:
-                            "This will help us pair you with the right person!",
+                      validator: MultiValidator(
+                        [
+                          RequiredValidator(
+                            errorText:
+                                "This will help us pair you with the right person!",
+                          ),
+                          MinLengthValidator(15,
+                              errorText:
+                                  "Come on you can write more than that..."),
+                        ],
                       ),
                     ),
                     SizedBox(

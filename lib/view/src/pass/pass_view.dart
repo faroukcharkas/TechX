@@ -5,17 +5,28 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 
 class PassView extends StatelessWidget {
-  const PassView({Key? key}) : super(key: key);
+  const PassView({
+    Key? key,
+    required this.rank,
+    required this.pid,
+    required this.lastName,
+    required this.firstName,
+  }) : super(key: key);
+
+  final int rank;
+  final String pid;
+  final String lastName;
+  final String firstName;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(20.0),
       child: MemberPass(
-        rank: 4,
-        pid: "730481745",
-        lastName: "Charkas",
-        firstName: "Farouk",
+        rank: rank,
+        pid: pid,
+        lastName: lastName,
+        firstName: firstName,
       ),
     );
   }

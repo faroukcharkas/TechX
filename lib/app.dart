@@ -1,7 +1,8 @@
-import 'package:techx/view/src/auth/auth_view.dart';
+import 'package:provider/provider.dart';
 import 'domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'view/view.dart';
+import 'controller/controller.dart';
 
 class TechX extends StatelessWidget {
   const TechX({Key? key}) : super(key: key);
@@ -9,12 +10,17 @@ class TechX extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'TechX',
-      debugShowCheckedModeBanner: false,
-      theme: kThemeData,
-      home: SplashView(),
-      onGenerateRoute: onGenerateRoute,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: UserDataController()),
+      ],
+      child: MaterialApp(
+        title: 'TechX',
+        debugShowCheckedModeBanner: false,
+        theme: kThemeData,
+        home: const SplashView(),
+        onGenerateRoute: onGenerateRoute,
+      ),
     );
   }
 }

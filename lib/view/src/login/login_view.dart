@@ -80,8 +80,11 @@ class _LoginViewState extends State<LoginView> {
                       icon: Icons.tag,
                       label: "Personal Identification (PID)",
                       hintText: "e.g. 730483273",
+                      keyboardType: TextInputType.number,
                       validator: MultiValidator(
                         [
+                          PatternValidator(r"^(0|[1-9][0-9]*)$",
+                              errorText: "PID must be numbers only."),
                           RequiredValidator(errorText: "What's ur PID?"),
                           MinLengthValidator(9,
                               errorText:

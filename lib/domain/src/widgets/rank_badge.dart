@@ -41,40 +41,33 @@ class RankBadge extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              Text(
-                "Competition Rank",
-                style: TextStyle(
-                  color: Colors.black.withOpacity(0.75),
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w300,
-                ),
+              Row(
+                children: [
+                  Icon(
+                    Icons.star,
+                    size: 16,
+                    color: Colors.black.withOpacity(0.75),
+                  ),
+                  Text(
+                    pointsUntilNextRank.toString(),
+                    style: TextStyle(
+                      color: Colors.black.withOpacity(0.75),
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 5.0,
+                  ),
+                  Text(
+                    "until ${RankUtility.getRankName(rank + 1)}",
+                    style: TextStyle(
+                      color: Colors.black.withOpacity(0.75),
+                    ),
+                  ),
+                ],
               ),
             ],
-          ),
-          Expanded(
-            child: Container(),
-          ),
-          Icon(
-            Icons.star,
-            size: 16,
-            color: Colors.black.withOpacity(0.75),
-          ),
-          Text(
-            pointsUntilNextRank.toString(),
-            style: TextStyle(
-              color: Colors.black.withOpacity(0.75),
-              fontSize: 16.0,
-              fontWeight: FontWeight.w900,
-            ),
-          ),
-          SizedBox(
-            width: 5.0,
-          ),
-          Text(
-            "until ${RankUtility.getRankName(rank + 1)}",
-            style: TextStyle(
-              color: Colors.black.withOpacity(0.75),
-            ),
           ),
         ],
       ),

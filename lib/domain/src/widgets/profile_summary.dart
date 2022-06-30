@@ -42,14 +42,6 @@ class ProfileSummary extends StatelessWidget {
     return returnRankList;
   }
 
-  String _getRankName() {
-    if (rank == 0) {
-      return "Associate";
-    } else {
-      return "Member";
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(

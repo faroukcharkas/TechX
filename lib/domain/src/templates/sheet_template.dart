@@ -18,22 +18,31 @@ class SheetTemplate extends StatelessWidget {
       child: Column(
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Receipts",
+                title,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20.0,
+                  fontSize: 35.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Expanded(child: Container()),
-              Icon(
-                Icons.close,
-                size: 25.0,
-                color: Colors.white,
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(
+                  Icons.close,
+                  size: 25.0,
+                  color: Colors.white,
+                ),
               ),
             ],
+          ),
+          SizedBox(
+            height: 20.0,
           ),
           child,
         ],
