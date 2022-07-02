@@ -38,7 +38,7 @@ class HomeView extends StatelessWidget {
                   Expanded(
                     child: NavigationTile(
                       color: Colors.blue,
-                      icon: Icons.qr_code,
+                      icon: Icons.qr_code_2_outlined,
                       message: "Open Pass",
                       onTap: () {
                         pageController.animateToPage(1,
@@ -53,7 +53,7 @@ class HomeView extends StatelessWidget {
                   Expanded(
                     child: NavigationTile(
                       color: Colors.blueGrey,
-                      icon: Icons.person,
+                      icon: Icons.person_outline,
                       message: "Open Profile",
                       onTap: () {
                         pageController.animateToPage(3,

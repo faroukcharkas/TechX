@@ -20,7 +20,7 @@ class UserModel {
   final String firstName;
   final String lastName;
   final String email;
-  final String expectedGraduationYear;
+  final int expectedGraduationYear;
   final String howTheyHeardAboutUs;
   final String joinIntent;
   final String pid;
@@ -41,7 +41,7 @@ class UserModel {
     return email;
   }
 
-  String get getGradYear {
+  int get getGradYear {
     return getGradYear;
   }
 
@@ -87,5 +87,37 @@ class UserModel {
 
   bool get getHasPaid {
     return (memberProgressionIndex > -1);
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "firstName": firstName,
+      "lastName": lastName,
+      "email": email,
+      "expectedGraduationYear": expectedGraduationYear,
+      "howTheyHeardAboutUs": howTheyHeardAboutUs,
+      "joinIntent": joinIntent,
+      "pid": pid,
+      "points": points,
+      "memberProgressionIndex": memberProgressionIndex,
+      "lastMembershipStatusUpdate": lastMembershipStatusUpdate,
+      "attendance": attendance,
+    };
+  }
+
+  factory UserModel.fromData(Map<String, dynamic> data) {
+    return UserModel(
+      firstName: data["firstName"],
+      lastName: data["lastName"],
+      email: data["email"],
+      expectedGraduationYear: data["expectedGraduationYear"],
+      howTheyHeardAboutUs: data["howTheyHeardAboutUs"],
+      joinIntent: data["joinIntent"],
+      pid: data["pid"],
+      points: data["points"],
+      memberProgressionIndex: data["memberProgressionIndex"],
+      lastMembershipStatusUpdate: data["lastMembershipStatusUpdate"],
+      attendance: data["attendance"],
+    );
   }
 }

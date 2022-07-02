@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:techx/domain/src/utilities.dart';
 
 enum ButtonState {
   enabledUnpressed,
@@ -16,6 +17,7 @@ class BasicButton extends StatefulWidget {
     this.enabled = true,
     required this.enabledText,
     required this.onTap,
+    this.onAsyncTap,
     this.dynamicFeedback = false,
     this.filledIn = true,
     this.disabledText = "",
@@ -27,7 +29,8 @@ class BasicButton extends StatefulWidget {
   final bool filledIn;
   final String enabledText;
   final String disabledText;
-  final void Function()? onTap;
+  final void Function() onTap;
+  final Future<void> Function()? onAsyncTap;
   final double minWidth;
   final bool dynamicFeedback;
 
@@ -179,6 +182,7 @@ class _BasicButtonState extends State<BasicButton> {
       child: RawMaterialButton(
         onPressed: () async {
           if (_debounce == true && widget.enabled == true) {
+            VibrateUtility.vibrate();
             _debounce = false;
             bool processSuccess = true;
             if (mounted == true) {
@@ -187,9 +191,17 @@ class _BasicButtonState extends State<BasicButton> {
               });
             }
             try {
-              widget.onTap!();
+              if (widget.onAsyncTap != null) {
+                await widget.onAsyncTap!();
+              } else {
+                widget.onTap();
+              }
             } catch (e) {
               _errorMessage = e.toString();
+              if (_errorMessage.startsWith("Exception: ")) {
+                _errorMessage =
+                    _errorMessage.substring(11, _errorMessage.length);
+              }
               processSuccess = false;
             }
             await Future.delayed(const Duration(seconds: 1, milliseconds: 500));
@@ -197,12 +209,14 @@ class _BasicButtonState extends State<BasicButton> {
               if (processSuccess == true) {
                 if (mounted == true) {
                   setState(() {
+                    VibrateUtility.vibrate();
                     _buttonState = ButtonState.enabledSuccess;
                   });
                 }
               } else {
                 if (mounted == true) {
                   setState(() {
+                    VibrateUtility.vibrate();
                     _buttonState = ButtonState.enabledFailure;
                   });
                 }

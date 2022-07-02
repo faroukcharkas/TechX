@@ -13,8 +13,10 @@ class RankBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color textColor = (rank == 0 ? Colors.white : Colors.black);
+
     return Container(
-      padding: EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(20.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.0),
         border: Border.all(
@@ -36,7 +38,7 @@ class RankBadge extends StatelessWidget {
               Text(
                 RankUtility.getRankName(rank),
                 style: TextStyle(
-                  color: Colors.black.withOpacity(0.75),
+                  color: textColor.withOpacity(0.75),
                   fontSize: 30.0,
                   fontWeight: FontWeight.w700,
                 ),
@@ -46,12 +48,12 @@ class RankBadge extends StatelessWidget {
                   Icon(
                     Icons.star,
                     size: 16,
-                    color: Colors.black.withOpacity(0.75),
+                    color: textColor.withOpacity(0.75),
                   ),
                   Text(
                     pointsUntilNextRank.toString(),
                     style: TextStyle(
-                      color: Colors.black.withOpacity(0.75),
+                      color: textColor.withOpacity(0.75),
                       fontSize: 16.0,
                       fontWeight: FontWeight.w900,
                     ),
@@ -62,7 +64,7 @@ class RankBadge extends StatelessWidget {
                   Text(
                     "until ${RankUtility.getRankName(rank + 1)}",
                     style: TextStyle(
-                      color: Colors.black.withOpacity(0.75),
+                      color: textColor.withOpacity(0.75),
                     ),
                   ),
                 ],

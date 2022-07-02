@@ -3,6 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:techx/domain/domain.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:techx/model/model.dart';
+import 'package:provider/provider.dart';
+import 'package:techx/controller/controller.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key, required this.controller}) : super(key: key);
@@ -15,6 +19,21 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController pidController = TextEditingController();
+
+  @override
+  void initState() {
+    @override
+    void initState() {
+      FirebaseAuth.instance.authStateChanges().listen((User? user) {
+        if (user != null) {
+          print("User is signed in.");
+        }
+      });
+      super.initState();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +77,7 @@ class _LoginViewState extends State<LoginView> {
                 child: Column(
                   children: [
                     CustomTextFormField(
+                      controller: emailController,
                       icon: Icons.email_outlined,
                       label: "UNC Email",
                       hintText: "e.g. fcharkas@unc.edu",
@@ -77,6 +97,7 @@ class _LoginViewState extends State<LoginView> {
                       height: 10.0,
                     ),
                     CustomTextFormField(
+                      controller: pidController,
                       icon: Icons.tag,
                       label: "Personal Identification (PID)",
                       hintText: "e.g. 730483273",
@@ -102,17 +123,32 @@ class _LoginViewState extends State<LoginView> {
                       enabled: true,
                       enabledText: "Login",
                       dynamicFeedback: true,
-                      onTap: () {
+                      onTap: () {},
+                      onAsyncTap: () async {
                         if (_formKey.currentState!.validate()) {
-                          Timer(
-                            Duration(seconds: 4),
-                            () {
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context, '/app', (route) => false);
-                            },
-                          );
+                          try {
+                            // Sign in
+                            final credential = await FirebaseAuth.instance
+                                .signInWithEmailAndPassword(
+                              email: emailController.text,
+                              password: pidController.text,
+                            );
+                            // Set user data
+                            Provider.of<UserDataController>(context)
+                                .setUserModelFromFirebase();
+                          } on FirebaseAuthException catch (e) {
+                            if (e.code == 'invalid-email') {
+                              throw Exception('Invalid email lol');
+                            } else if (e.code == 'user-disabled') {
+                              throw Exception('Account disabled, contact us');
+                            } else if (e.code == 'user-not-found') {
+                              throw Exception('Email does not exist');
+                            } else if (e.code == 'wrong-password') {
+                              throw Exception('yo PID wrong');
+                            }
+                          }
                         } else {
-                          throw ErrorHint("Fix errors above!");
+                          throw Exception("Review fields above");
                         }
                       },
                       minWidth: double.infinity,

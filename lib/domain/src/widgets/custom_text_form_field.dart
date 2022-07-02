@@ -7,6 +7,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.hintText,
     required this.icon,
     required this.validator,
+    required this.controller,
     this.onChanged,
     this.obscureText = false,
     this.textCapitalization = TextCapitalization.none,
@@ -17,6 +18,7 @@ class CustomTextFormField extends StatelessWidget {
   final String hintText;
   final IconData icon;
   final bool obscureText;
+  final TextEditingController controller;
   final String? Function(String?)? validator;
   final TextCapitalization textCapitalization;
   final TextInputType keyboardType;
@@ -37,6 +39,7 @@ class CustomTextFormField extends StatelessWidget {
           height: 5.0,
         ),
         TextFormField(
+          controller: controller,
           onChanged: onChanged,
           validator: validator,
           obscureText: obscureText,

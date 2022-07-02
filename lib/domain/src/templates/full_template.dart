@@ -70,7 +70,7 @@ class FullTemplate extends StatelessWidget {
               label: "Home",
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.qr_code),
+              icon: Icon(Icons.qr_code_2),
               label: "Your Pass",
             ),
             BottomNavigationBarItem(

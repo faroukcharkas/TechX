@@ -1,7 +1,15 @@
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:techx/controller/controller.dart';
 import 'package:techx/domain/domain.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
+import 'package:provider/provider.dart';
+import 'package:techx/model/model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegistrationView extends StatefulWidget {
   const RegistrationView({Key? key, required this.controller})
@@ -15,7 +23,62 @@ class RegistrationView extends StatefulWidget {
 
 class _RegistrationViewState extends State<RegistrationView> {
   final _formKey = GlobalKey<FormState>();
-  String _password = "";
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController pidController = TextEditingController();
+  TextEditingController gradYearController = TextEditingController();
+  TextEditingController heardAboutUsController = TextEditingController();
+  TextEditingController joinIntentController = TextEditingController();
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    emailController.dispose();
+    pidController.dispose();
+    gradYearController.dispose();
+    heardAboutUsController.dispose();
+    joinIntentController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      print("registration");
+      if (user != null) {
+        // Registration was successful :P
+        UserModel userModel = UserModel(
+          firstName: firstNameController.text,
+          lastName: lastNameController.text,
+          email: emailController.text,
+          expectedGraduationYear: int.parse(gradYearController.text),
+          howTheyHeardAboutUs: heardAboutUsController.text,
+          joinIntent: joinIntentController.text,
+          pid: pidController.text,
+          points: 0,
+          memberProgressionIndex: -1,
+          lastMembershipStatusUpdate: DateTime.now().toString(),
+          attendance: [],
+        );
+        // Update user model
+        if (mounted) {
+          Provider.of<UserDataController>(context, listen: false)
+              .setUserModel(userModel);
+        }
+        // Update db
+        FirebaseFirestore.instance
+            .collection("users")
+            .doc(user.uid)
+            .set(userModel.toMap())
+            .then((value) => Navigator.pushNamedAndRemoveUntil(
+                context, "/welcome", (route) => false))
+            .onError((error, stackTrace) => print(error));
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,16 +125,19 @@ class _RegistrationViewState extends State<RegistrationView> {
                   children: [
                     CustomTextFormField(
                       icon: Icons.text_fields,
+                      controller: firstNameController,
                       label: "First Name",
                       hintText: "e.g. Farouk",
                       validator: RequiredValidator(
-                          errorText:
-                              "Hi (blank cuz u didn't fill this out), I'm dad."),
+                        errorText:
+                            "Hi (blank cuz u didn't fill this out), I'm dad.",
+                      ),
                     ),
                     SizedBox(
                       height: 10.0,
                     ),
                     CustomTextFormField(
+                      controller: lastNameController,
                       icon: Icons.text_fields,
                       label: "Last Name",
                       hintText: "e.g. Charkas",
@@ -83,6 +149,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                       height: 10.0,
                     ),
                     CustomTextFormField(
+                      controller: emailController,
                       icon: Icons.email_outlined,
                       label: "UNC Email",
                       hintText: "e.g. fcharkas@unc.edu",
@@ -101,6 +168,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                       height: 10.0,
                     ),
                     CustomTextFormField(
+                      controller: pidController,
                       icon: Icons.tag,
                       label: "Personal Identification (PID)",
                       keyboardType: TextInputType.number,
@@ -122,6 +190,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                       height: 10.0,
                     ),
                     CustomTextFormField(
+                      controller: gradYearController,
                       icon: Icons.school_outlined,
                       label: "Expected Graduation Year",
                       hintText: "e.g. 2025",
@@ -146,6 +215,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                       height: 20.0,
                     ),
                     CustomTextFormField(
+                      controller: heardAboutUsController,
                       icon: Icons.campaign,
                       label: "How did you hear about us?",
                       hintText: "e.g. FallFest",
@@ -157,6 +227,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                       height: 20.0,
                     ),
                     CustomTextFormField(
+                      controller: joinIntentController,
                       icon: Icons.lightbulb_outlined,
                       label: "What do you want out of joining TechX?",
                       hintText: "e.g. Get better at LeetCode!",
@@ -180,17 +251,27 @@ class _RegistrationViewState extends State<RegistrationView> {
                       enabled: true,
                       dynamicFeedback: true,
                       enabledText: "Join TechX",
-                      onTap: () {
+                      onTap: () {},
+                      onAsyncTap: () async {
                         if (_formKey.currentState!.validate()) {
-                          Timer(
-                            Duration(seconds: 4),
-                            () {
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context, '/welcome', (route) => false);
-                            },
-                          );
+                          try {
+                            final credential = await FirebaseAuth.instance
+                                .createUserWithEmailAndPassword(
+                              email: emailController.text,
+                              password: pidController.text,
+                            );
+                            // Set user data
+                            Provider.of<UserDataController>(context)
+                                .setUserModelFromFirebase();
+                          } on FirebaseAuthException catch (e) {
+                            if (e.code == 'weak-password') {
+                              throw Exception('Password too weak');
+                            } else if (e.code == 'email-already-in-use') {
+                              throw Exception('Email already exists');
+                            }
+                          }
                         } else {
-                          throw ErrorHint("Fix errors above!");
+                          throw Exception("Review fields above");
                         }
                       },
                       minWidth: double.infinity,

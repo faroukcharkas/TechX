@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:techx/controller/controller.dart';
 import 'package:techx/domain/domain.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 
 class SplashView extends StatefulWidget {
@@ -13,10 +16,47 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
+    DateTime animationBeginTime = DateTime.now();
+    DateTime animationEndTime = animationBeginTime.add(Duration(seconds: 6));
     // Make sure that the below duration is 2x the animation length.
-    Timer(Duration(seconds: 6), () {
-      Navigator.pushNamedAndRemoveUntil(context, '/auth', (route) => false);
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        // User is not signed in.
+        Timer(
+          const Duration(seconds: 6),
+          () {
+            if (mounted) {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/auth', (route) => false);
+            }
+          },
+        );
+      } else {
+        // User is signed in.
+        try {
+          Provider.of<UserDataController>(context, listen: false)
+              .setUserModelFromFirebase();
+        } catch (e) {
+          print(e.toString());
+          // Silent errors.
+        }
+        Timer(
+          const Duration(seconds: 6),
+          () {
+            if (mounted) {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/app', (route) => false);
+            }
+          },
+        );
+      }
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:techx/domain/domain.dart';
 import 'package:techx/domain/src/widgets/dues_section.dart';
@@ -73,8 +74,7 @@ class ProfileView extends StatelessWidget {
                 enabledText: "Log Out",
                 disabledText: "Show Receipts",
                 onTap: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, '/', (route) => false);
+                  FirebaseAuth.instance.signOut();
                 },
               ),
             ],

@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:techx/domain/domain.dart';
 import 'package:techx/model/model.dart';
 import 'package:techx/view/view.dart';
 import 'package:techx/controller/controller.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AppView extends StatefulWidget {
   const AppView({Key? key}) : super(key: key);
@@ -14,7 +17,21 @@ class AppView extends StatefulWidget {
 
 class _AppViewState extends State<AppView> {
   int _currentIndex = 0;
-  PageController _pageController = PageController(initialPage: 0);
+  final PageController _pageController = PageController(initialPage: 0);
+
+  @override
+  void initState() {
+    AuthUtility.setAuthListener(
+      (User user) {
+        Provider.of<UserDataController>(context, listen: false)
+            .setUserModelFromFirebase();
+      },
+      () {
+        Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+      },
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +50,7 @@ class _AppViewState extends State<AppView> {
         lastName: userModel.getLastName,
         firstName: userModel.getFirstName,
       ),
-      EventsView(
-        scheduleModel: ScheduleModel(
-          events: [],
-        ),
-      ),
+      EventsView(),
       ProfileView(
         firstName: userModel.getFirstName,
         lastName: userModel.getLastName,

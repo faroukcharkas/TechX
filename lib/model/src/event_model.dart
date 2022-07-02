@@ -50,4 +50,18 @@ class EventModel {
   String get fromNow {
     return Jiffy(beginTime).fromNow();
   }
+
+  factory EventModel.fromJSON(Map<String, dynamic> json) {
+    return EventModel(
+      eventType: json["eventType"] ?? "EVNT",
+      title: json["title"] ?? "Oops...",
+      description: json["description"] ??
+          "this is kinda awkward, for some reason this event is broken..?",
+      location: json["location"] ?? "TechX HQ",
+      beginTime: DateTime.parse(json["beginTime"] ??
+          DateTime.now().subtract(Duration(days: 10)).toString()),
+      endTime: DateTime.parse(json["endTime"] ??
+          DateTime.now().subtract(Duration(days: 10)).toString()),
+    );
+  }
 }

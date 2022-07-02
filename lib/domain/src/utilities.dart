@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:vibration/vibration.dart';
 
 const rankPoints = [100, 200, 300, 400, 500, 600, 700, 800, 900];
 
@@ -8,7 +10,7 @@ class RankUtility {
       case 0:
         return [
           Colors.black,
-          Colors.black38,
+          Colors.grey.shade800,
         ];
       case 1:
         return [
@@ -75,6 +77,27 @@ class RankUtility {
   }
 
   static int getPointsTillNextRank(int rank, int points) {
-    return rankPoints[rank + 1] - points;
+    return ((rank == 0) ? 1 : rankPoints[rank + 1] - points);
+  }
+}
+
+class AuthUtility {
+  static void setAuthListener(
+      void Function(User) signedIn, void Function() signedOut) {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        signedOut();
+      } else {
+        signedIn(user);
+      }
+    });
+  }
+}
+
+class VibrateUtility {
+  static void vibrate() async {
+    if (await Vibration.hasVibrator() ?? true) {
+      Vibration.vibrate();
+    }
   }
 }
