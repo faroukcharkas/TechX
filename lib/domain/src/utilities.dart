@@ -1,6 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:techx/model/model.dart';
 import 'package:vibration/vibration.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 const rankPoints = [100, 200, 300, 400, 500, 600, 700, 800, 900];
 
@@ -98,6 +103,69 @@ class VibrateUtility {
   static void vibrate() async {
     if (await Vibration.hasVibrator() ?? true) {
       Vibration.vibrate();
+    }
+  }
+}
+
+class NotificationUtility {
+  static Future<String> _getTimeZoneName() async {
+    return await FlutterNativeTimezone.getLocalTimezone();
+  }
+
+  static Future<tz.Location> _getLocation() async {
+    tz.initializeTimeZones();
+    final String? timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(timeZoneName!));
+
+    return tz.getLocation(timeZoneName);
+  }
+
+  static void scheduleNotification(
+      int id, String title, String body, DateTime time) async {
+    var location = await _getLocation();
+
+    FlutterLocalNotificationsPlugin().zonedSchedule(
+      id,
+      title,
+      body,
+      tz.TZDateTime.from(time, location),
+      NotificationDetails(
+        android: AndroidNotificationDetails(id.toString(), 'EVENTS'),
+      ),
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      androidAllowWhileIdle: true,
+    );
+  }
+
+  static void scheduleFromEventList(List<EventModel> eventList) async {
+    List<EventModel> reversedEventList = List.from(eventList.reversed);
+    for (var i = 0; i < reversedEventList.length; i++) {
+      if (reversedEventList[i]
+          .beginTime
+          .subtract(Duration(hours: 1))
+          .isAfter(DateTime.now())) {
+        scheduleNotification(
+          i,
+          "${reversedEventList[i].title} starting in 1 hour",
+          "${reversedEventList[i].location} @ ${reversedEventList[i].intraDayTime}",
+          reversedEventList[i].beginTime.subtract(Duration(hours: 1)),
+        );
+      }
+      if (reversedEventList[i]
+          .beginTime
+          .subtract(Duration(hours: 6))
+          .isAfter(DateTime.now())) {
+        scheduleNotification(
+          i,
+          "${reversedEventList[i].title} starting in 6 hours",
+          "${reversedEventList[i].location} @ ${reversedEventList[i].intraDayTime}",
+          reversedEventList[i].beginTime.subtract(Duration(hours: 6)),
+        );
+      }
+      if (i == 65) {
+        break;
+      }
     }
   }
 }

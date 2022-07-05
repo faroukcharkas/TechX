@@ -51,6 +51,11 @@ class EventModel {
     return Jiffy(beginTime).fromNow();
   }
 
+  String get intraDayTime {
+    String intraDayTime = Jiffy(beginTime).format("h:mm a");
+    return intraDayTime;
+  }
+
   factory EventModel.fromJSON(Map<String, dynamic> json) {
     return EventModel(
       eventType: json["eventType"] ?? "EVNT",

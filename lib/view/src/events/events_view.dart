@@ -41,10 +41,14 @@ class _EventsViewState extends State<EventsView> {
           snapshot.data!.docs.map((DocumentSnapshot document) {
             Map<String, dynamic> data =
                 document.data()! as Map<String, dynamic>;
-            eventList.add(EventModel.fromJSON(data));
+            if (DateTime.parse(data["beginTime"]).isAfter(DateTime.now())) {
+              eventList.add(EventModel.fromJSON(data));
+            }
           }).toList();
 
           ScheduleModel scheduleModel = ScheduleModel(events: eventList);
+
+          NotificationUtility.scheduleFromEventList(eventList);
 
           return ListView(
             children: [

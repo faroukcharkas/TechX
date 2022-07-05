@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:techx/controller/controller.dart';
 import 'package:techx/domain/domain.dart';
 import 'package:techx/domain/src/widgets/dues_section.dart';
+import 'package:provider/provider.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({
@@ -76,6 +78,19 @@ class ProfileView extends StatelessWidget {
                 onTap: () {
                   FirebaseAuth.instance.signOut();
                 },
+              ),
+              SizedBox(
+                height: 50.0,
+              ),
+              Text(
+                FirebaseAuth.instance.currentUser?.uid ?? "[no uid found]",
+                style: TextStyle(
+                  fontSize: 15.0,
+                  color: Colors.white.withOpacity(0.5),
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
               ),
             ],
           ),

@@ -198,13 +198,20 @@ class _BasicButtonState extends State<BasicButton> {
               }
             } catch (e) {
               _errorMessage = e.toString();
+              print(_errorMessage);
               if (_errorMessage.startsWith("Exception: ")) {
                 _errorMessage =
                     _errorMessage.substring(11, _errorMessage.length);
               }
+              if (_errorMessage.length > 34) {
+                _errorMessage = _errorMessage.substring(0, 34) + "...";
+              }
               processSuccess = false;
             }
-            await Future.delayed(const Duration(seconds: 1, milliseconds: 500));
+            if (mounted) {
+              await Future.delayed(
+                  const Duration(seconds: 1, milliseconds: 500));
+            }
             if (widget.dynamicFeedback) {
               if (processSuccess == true) {
                 if (mounted == true) {
@@ -221,7 +228,9 @@ class _BasicButtonState extends State<BasicButton> {
                   });
                 }
               }
-              await Future.delayed(const Duration(seconds: 4));
+              if (mounted) {
+                await Future.delayed(const Duration(seconds: 4));
+              }
             }
             if (mounted == true) {
               setState(() {

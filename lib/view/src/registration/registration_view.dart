@@ -45,8 +45,7 @@ class _RegistrationViewState extends State<RegistrationView> {
 
   @override
   void initState() {
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      print("registration");
+    FirebaseAuth.instance.authStateChanges().listen((User? user) async {
       if (user != null) {
         // Registration was successful :P
         UserModel userModel = UserModel(
@@ -71,7 +70,7 @@ class _RegistrationViewState extends State<RegistrationView> {
         FirebaseFirestore.instance
             .collection("users")
             .doc(user.uid)
-            .set(userModel.toMap())
+            .set(await userModel.toMap())
             .then((value) => Navigator.pushNamedAndRemoveUntil(
                 context, "/welcome", (route) => false))
             .onError((error, stackTrace) => print(error));

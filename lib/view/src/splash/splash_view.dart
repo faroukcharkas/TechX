@@ -3,10 +3,23 @@ import 'package:provider/provider.dart';
 import 'package:techx/controller/controller.dart';
 import 'package:techx/domain/domain.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:async';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);
+
+  void requestPermissions() async {
+    final bool? result = await FlutterLocalNotificationsPlugin()
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+  }
 
   @override
   State<SplashView> createState() => _SplashViewState();
@@ -16,6 +29,7 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
+
     DateTime animationBeginTime = DateTime.now();
     DateTime animationEndTime = animationBeginTime.add(Duration(seconds: 6));
     // Make sure that the below duration is 2x the animation length.

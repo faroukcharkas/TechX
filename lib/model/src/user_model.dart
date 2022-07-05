@@ -1,6 +1,7 @@
 import 'dart:core';
 
 import 'package:techx/domain/domain.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class UserModel {
   UserModel({
@@ -89,7 +90,7 @@ class UserModel {
     return (memberProgressionIndex > -1);
   }
 
-  Map<String, dynamic> toMap() {
+  Future<Map<String, dynamic>> toMap() async {
     return {
       "firstName": firstName,
       "lastName": lastName,
@@ -102,6 +103,8 @@ class UserModel {
       "memberProgressionIndex": memberProgressionIndex,
       "lastMembershipStatusUpdate": lastMembershipStatusUpdate,
       "attendance": attendance,
+      "token": await FirebaseMessaging.instance.getToken(),
+      "lastTokenUpdate": DateTime.now(),
     };
   }
 

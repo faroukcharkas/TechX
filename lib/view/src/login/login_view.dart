@@ -24,15 +24,14 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   void initState() {
-    @override
-    void initState() {
-      FirebaseAuth.instance.authStateChanges().listen((User? user) {
-        if (user != null) {
-          print("User is signed in.");
-        }
-      });
-      super.initState();
-    }
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        Timer(Duration(seconds: 3), () {
+          Navigator.pushNamedAndRemoveUntil(context, '/app', (route) => false);
+        });
+      }
+    });
+    super.initState();
   }
 
   @override
@@ -134,7 +133,8 @@ class _LoginViewState extends State<LoginView> {
                               password: pidController.text,
                             );
                             // Set user data
-                            Provider.of<UserDataController>(context)
+                            Provider.of<UserDataController>(context,
+                                    listen: false)
                                 .setUserModelFromFirebase();
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'invalid-email') {
