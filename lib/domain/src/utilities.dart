@@ -6,6 +6,7 @@ import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'dart:math';
 
 const rankPoints = [100, 200, 300, 400, 500, 600, 700, 800, 900];
 
@@ -73,16 +74,31 @@ class RankUtility {
     }
   }
 
-  static String getMembershipStatus(bool isMember) {
-    if (isMember) {
-      return "Member";
-    } else {
+  static String getMembershipStatus(int memberProgressIndex) {
+    if (memberProgressIndex <= -1) {
+      return 'Prospect';
+    }
+    if (memberProgressIndex < 2) {
       return "Associate";
+    } else {
+      return "Member";
     }
   }
 
   static int getPointsTillNextRank(int rank, int points) {
     return ((rank == 0) ? 1 : rankPoints[rank + 1] - points);
+  }
+
+  static getNextSteps(int memberProgressIndex) {
+    if (memberProgressIndex <= -1) {
+      // Intern
+      return 'Pay dues to become an Associate.';
+    }
+    if (memberProgressIndex < 2) {
+      return "Check the Profile page for next steps.";
+    } else {
+      return "";
+    }
   }
 }
 
@@ -167,5 +183,25 @@ class NotificationUtility {
         break;
       }
     }
+  }
+
+  static void showNotification(String title, String body) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'ANNOUNCEMENTS',
+      'Announcements',
+      channelDescription: 'Announcements sent to you from the TechX board.',
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+    );
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await FlutterLocalNotificationsPlugin().show(
+      99,
+      title,
+      body,
+      platformChannelSpecifics,
+    );
   }
 }

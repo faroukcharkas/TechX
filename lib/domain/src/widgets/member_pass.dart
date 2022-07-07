@@ -14,12 +14,14 @@ class MemberPass extends StatefulWidget {
     required this.pid,
     required this.firstName,
     required this.lastName,
+    required this.memberProgressIndex,
   }) : super(key: key);
 
   final int rank;
   final String pid;
   final String lastName;
   final String firstName;
+  final int memberProgressIndex;
 
   @override
   State<MemberPass> createState() => _MemberPassState();
@@ -105,90 +107,117 @@ class _MemberPassState extends State<MemberPass>
       ),
       child: Container(
         padding: EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            BarcodeWidget(
-              height: 50.0,
-              color: textColor.withOpacity(0.5),
-              data: (() {
-                return "69420";
-              })(),
-              barcode: Barcode.codabar(),
-              drawText: false,
-            ),
-            Row(
+        child: (() {
+          if (widget.memberProgressIndex >= 0) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  widget.pid,
-                  style: TextStyle(
-                    color: textColor.withOpacity(0.5),
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-                Expanded(child: Container()),
-                Text(
-                  "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().hour}/${DateTime.now().minute}",
-                  style: TextStyle(
-                    color: textColor.withOpacity(0.5),
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-              ],
-            ),
-            Expanded(
-              child: Container(),
-            ),
-            Text(
-              "${widget.lastName},",
-              style: TextStyle(
-                color: textColor.withOpacity(0.8),
-                fontSize: 50.0,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            Text(
-              widget.firstName,
-              style: TextStyle(
-                color: textColor.withOpacity(0.8),
-                fontSize: 30.0,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            Expanded(
-              child: Container(),
-            ),
-            QrImage(
-              data: qrcodeCode,
-              version: QrVersions.auto,
-              size: 300.0,
-              foregroundColor: textColor,
-            ),
-            Row(
-              children: [
-                Image.asset(
-                  'assets/brand/techx-full-logo@0.5x/techx-full-logo@0.5x(black).png',
-                  scale: 5,
+                BarcodeWidget(
+                  height: 50.0,
                   color: textColor.withOpacity(0.5),
+                  data: (() {
+                    return "69420";
+                  })(),
+                  barcode: Barcode.codabar(),
+                  drawText: false,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      widget.pid,
+                      style: TextStyle(
+                        color: textColor.withOpacity(0.5),
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                    Expanded(child: Container()),
+                    Text(
+                      "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().hour}/${DateTime.now().minute}",
+                      style: TextStyle(
+                        color: textColor.withOpacity(0.5),
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ],
                 ),
                 Expanded(
                   child: Container(),
                 ),
-                Container(
-                  height: 30.0,
-                  width: 50.0,
-                  child: LoadingIndicator(
-                    indicatorType: Indicator.lineScale,
-                    strokeWidth: 2.0,
-                    colors: [textColor.withOpacity(0.5)],
+                Text(
+                  "${widget.lastName},",
+                  style: TextStyle(
+                    color: textColor.withOpacity(0.8),
+                    fontSize: 50.0,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
+                Text(
+                  widget.firstName,
+                  style: TextStyle(
+                    color: textColor.withOpacity(0.8),
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Expanded(
+                  child: Container(),
+                ),
+                QrImage(
+                  data: qrcodeCode,
+                  version: QrVersions.auto,
+                  size: 300.0,
+                  foregroundColor: textColor,
+                ),
+                Row(
+                  children: [
+                    Image.asset(
+                      'assets/brand/techx-full-logo@0.5x/techx-full-logo@0.5x(black).png',
+                      scale: 5,
+                      color: textColor.withOpacity(0.5),
+                    ),
+                    Expanded(
+                      child: Container(),
+                    ),
+                    Container(
+                      height: 30.0,
+                      width: 50.0,
+                      child: LoadingIndicator(
+                        indicatorType: Indicator.lineScale,
+                        strokeWidth: 2.0,
+                        colors: [textColor.withOpacity(0.5)],
+                      ),
+                    ),
+                  ],
+                ),
               ],
-            ),
-          ],
-        ),
+            );
+          } else {
+            return Column(
+              children: [
+                Expanded(child: Container()),
+                Icon(
+                  Icons.block,
+                  color: Colors.white,
+                  size: 80.0,
+                ),
+                SizedBox(
+                  height: 15.0,
+                ),
+                Text(
+                  "Member pass will display when you have paid your dues and have became an Associate.",
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.8),
+                    fontSize: 20.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Expanded(child: Container()),
+              ],
+            );
+          }
+        })(),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0),
           border: Border.all(

@@ -5,12 +5,12 @@ class ProfileSummary extends StatelessWidget {
   const ProfileSummary({
     Key? key,
     required this.rank,
-    required this.isMember,
+    required this.memberProgressIndex,
     required this.lastStatusUpdate,
   }) : super(key: key);
 
   final int rank;
-  final bool isMember;
+  final int memberProgressIndex;
   final DateTime lastStatusUpdate;
 
   List<Widget> _getRankRate() {
@@ -97,7 +97,7 @@ class ProfileSummary extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  RankUtility.getMembershipStatus(isMember),
+                  RankUtility.getMembershipStatus(memberProgressIndex),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 45.0,
@@ -108,7 +108,7 @@ class ProfileSummary extends StatelessWidget {
                   child: Container(),
                 ),
                 Text(
-                  "Since ${lastStatusUpdate.month}/${lastStatusUpdate.day}/${lastStatusUpdate.year}",
+                  RankUtility.getNextSteps(memberProgressIndex),
                   style: TextStyle(
                     color: Colors.white,
                   ),

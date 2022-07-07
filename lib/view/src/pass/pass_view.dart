@@ -11,12 +11,14 @@ class PassView extends StatelessWidget {
     required this.pid,
     required this.lastName,
     required this.firstName,
+    required this.memberProgressIndex,
   }) : super(key: key);
 
   final int rank;
   final String pid;
   final String lastName;
   final String firstName;
+  final int memberProgressIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,7 @@ class PassView extends StatelessWidget {
         pid: pid,
         lastName: lastName,
         firstName: firstName,
+        memberProgressIndex: memberProgressIndex,
       ),
     );
   }

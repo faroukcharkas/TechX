@@ -36,7 +36,7 @@ class PromoTrack extends StatelessWidget {
             ),
           ),
           Text(
-            RankUtility.getMembershipStatus(index >= steps.length - 1),
+            RankUtility.getMembershipStatus(index),
             style: TextStyle(
               color: Colors.white,
               fontSize: 30.0,

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:techx/domain/domain.dart';
 import 'package:techx/model/model.dart';
@@ -23,8 +24,10 @@ class _AppViewState extends State<AppView> {
   void initState() {
     AuthUtility.setAuthListener(
       (User user) {
-        Provider.of<UserDataController>(context, listen: false)
-            .setUserModelFromFirebase();
+        if (mounted) {
+          Provider.of<UserDataController>(context, listen: false)
+              .setUserModelFromFirebase();
+        }
       },
       () {
         Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
@@ -41,7 +44,7 @@ class _AppViewState extends State<AppView> {
       HomeView(
         pageController: _pageController,
         rank: userModel.getRank,
-        isMember: userModel.getIsMember,
+        memberProgressIndex: userModel.getMemberProgressIndex,
         lastStatusUpdate: DateTime.now(),
       ),
       PassView(
@@ -49,6 +52,7 @@ class _AppViewState extends State<AppView> {
         pid: userModel.getPID,
         lastName: userModel.getLastName,
         firstName: userModel.getFirstName,
+        memberProgressIndex: userModel.getMemberProgressIndex,
       ),
       EventsView(),
       ProfileView(

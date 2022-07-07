@@ -44,8 +44,9 @@ class ProfileView extends StatelessWidget {
                 height: 20.0,
               ),
               PromoTrack(
-                  steps: ["Dues", "1-on-1", "Project"],
-                  index: memberProgressionIndex),
+                steps: ["Dues", "1-on-1", "Project"],
+                index: memberProgressionIndex,
+              ),
               SizedBox(
                 height: 20.0,
               ),

@@ -7,13 +7,13 @@ class HomeView extends StatelessWidget {
     Key? key,
     required this.pageController,
     required this.rank,
-    required this.isMember,
+    required this.memberProgressIndex,
     required this.lastStatusUpdate,
   }) : super(key: key);
 
   final PageController pageController;
   final int rank;
-  final bool isMember;
+  final int memberProgressIndex;
   final DateTime lastStatusUpdate;
 
   @override
@@ -27,7 +27,7 @@ class HomeView extends StatelessWidget {
             children: [
               ProfileSummary(
                 rank: rank,
-                isMember: isMember,
+                memberProgressIndex: memberProgressIndex,
                 lastStatusUpdate: lastStatusUpdate,
               ),
               SizedBox(
